@@ -1,0 +1,42 @@
+backend:
+  name: turbo-github
+  turbo_site_id: f21c58e2-0a11-4921-bfc8-2f318b8dc531
+  branch: main
+
+site_url: https://yimeiyuan-website.wanethan52.workers.dev
+logo_url: https://yimeiyuan-website.wanethan52.workers.dev/favicon.ico
+
+media_folder: "images/products"
+public_folder: "/images/products"
+
+publish_mode: simple
+
+collections:
+  - name: "products"
+    label: "Products"
+    label_singular: "Product"
+    folder: "content/products"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: "yml"
+    format: "yaml"
+    summary: "{{title}} — {{category}} — {{product_code}}"
+    fields:
+      - { label: "Product Name", name: "title", widget: "string" }
+      - { label: "Product Code / SKU", name: "product_code", widget: "string", required: false }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Women's Wear", value: "women" }
+          - { label: "Men's Wear", value: "men" }
+      - { label: "Short Description", name: "description", widget: "text", required: false }
+      - { label: "Fabric", name: "fabric", widget: "string", required: false }
+      - { label: "Colors", name: "colors", widget: "string", required: false }
+      - { label: "Sizes", name: "sizes", widget: "string", required: false }
+      - { label: "Main Product Image", name: "image", widget: "image", required: false }
+      - { label: "Additional Images", name: "gallery", widget: "list", field: { label: "Image", name: "image", widget: "image" }, required: false }
+      - { label: "Video URL", name: "video_url", widget: "string", required: false }
+      - { label: "Featured on Homepage", name: "featured", widget: "boolean", default: false, required: false }
+      - { label: "Published", name: "published", widget: "boolean", default: true }
