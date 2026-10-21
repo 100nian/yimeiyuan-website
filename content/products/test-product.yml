@@ -1,0 +1,9 @@
+title: Test Product
+product_code: TEST001
+category: women
+description: Test product for website setup
+fabric: Cotton
+colors: Black, White
+sizes: S, M, L
+featured: false
+published: true
