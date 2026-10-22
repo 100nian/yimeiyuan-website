@@ -104,6 +104,13 @@ function makeDetailPage(product) {
   const safeImage = escapeHtml(image);
   const inquiryUrl = `/?product=${encodeURIComponent(code)}&title=${encodeURIComponent(title)}#contact`;
 
+const whatsappMessage =
+  `Hi, I'm interested in ${title} (Style No. ${code}). ` +
+  `I'd like to discuss customization, MOQ and pricing.`;
+
+const whatsappUrl =
+  `https://wa.me/8619047726595?text=${encodeURIComponent(whatsappMessage)}`;
+
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -126,6 +133,19 @@ h1{font:clamp(34px,5vw,52px)/1.08 Georgia,serif;letter-spacing:-.04em;margin:12p
 .detail{display:grid;grid-template-columns:120px 1fr;gap:15px;padding:13px 0;border-bottom:1px solid #dfe4dd;font-size:13px}
 .detail strong{font-size:11px;text-transform:uppercase;letter-spacing:.06em}
 .button{display:inline-block;background:#385b4b;color:white;padding:15px 20px;font-size:12px;font-weight:bold;letter-spacing:.06em;text-transform:uppercase}
+
+.whatsapp-button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 14px 20px;
+  background: #25D366;
+  color: #102b1b;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
 .note{font-size:11px;color:#69736e;margin-top:15px}
 footer{background:#1e2925;color:#eaf0e9;padding:24px 0;font-size:11px}
 @media(max-width:700px){.layout{grid-template-columns:1fr;gap:28px}main{padding-top:25px}.photo{aspect-ratio:4/4}}
@@ -149,6 +169,14 @@ ${detail("Colors", colors)}
 ${detail("Sizes", sizes)}
 </div>
 <a class="button" href="${inquiryUrl}">Inquire About This Product ↗</a>
+
+<a class="whatsapp-button"
+   href="${whatsappUrl}"
+   target="_blank"
+   rel="noopener noreferrer">
+  Inquire on WhatsApp ↗
+</a>
+
 <p class="note">Share your target quantity and requirements so we can review your inquiry.</p>
 </div>
 </div>
