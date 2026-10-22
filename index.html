@@ -36,5 +36,82 @@ document.getElementById('year').textContent=new Date().getFullYear();
 // Set SALES_EMAIL to the factory's real monitored business inbox before publishing.
 const SALES_EMAIL = '';
 document.getElementById('inquiryForm').addEventListener('submit',function(e){e.preventDefault();const d=new FormData(this);if(!SALES_EMAIL){const note=this.querySelector('.form-note');note.textContent='Setup required: add your real business email to SALES_EMAIL in this page’s script before publishing. This demo does not transmit or store customer inquiries.';note.style.color='#9a3d2f';return;}const subject=encodeURIComponent('Apparel Manufacturing Inquiry - '+d.get('company'));const body=encodeURIComponent('Name: '+d.get('name')+'\nCompany: '+d.get('company')+'\nBusiness email: '+d.get('email')+'\nCountry/region: '+d.get('country')+'\nProduct category: '+d.get('product')+'\nService needed: '+d.get('service')+'\n\nProject details:\n'+d.get('details'));window.location.href='mailto:'+SALES_EMAIL+'?subject='+subject+'&body='+body;});
+
+(async function () {
+  const container = document.getElementById("product-list");
+  if (!container) return;
+
+  try {
+    const response = await fetch("/products.json", {
+      cache: "no-store"
+    });
+
+    if (!response.ok) return;
+
+    const products = await response.json();
+
+    if (!Array.isArray(products) || products.length === 0) {
+      return;
+    }
+
+    const publishedProducts = products.filter(
+      product => product && product.published !== false
+    );
+
+    if (publishedProducts.length === 0) return;
+
+    container.replaceChildren();
+
+    publishedProducts.forEach(product => {
+      const title = product.title || "New Product";
+      const category = String(product.category || "women").toLowerCase();
+
+      const fallbackImage = category === "men"
+        ? "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=800&q=80"
+        : "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=80";
+
+      const imagePath =
+        typeof product.image === "string" ? product.image.trim() : "";
+
+      const card = document.createElement("article");
+      card.className = "cat-card";
+
+      const imageBox = document.createElement("div");
+      imageBox.className = "cat-image";
+
+      const img = document.createElement("img");
+      img.src = imagePath || fallbackImage;
+      img.alt = title;
+      img.loading = "lazy";
+
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = fallbackImage;
+      };
+
+      imageBox.appendChild(img);
+
+      const info = document.createElement("div");
+      info.className = "cat-info";
+
+      const heading = document.createElement("h3");
+      heading.textContent = title;
+
+      const arrow = document.createElement("span");
+      arrow.textContent = "↗";
+
+      info.appendChild(heading);
+      info.appendChild(arrow);
+
+      card.appendChild(imageBox);
+      card.appendChild(info);
+
+      container.appendChild(card);
+    });
+  } catch (error) {
+    console.error("Could not load products:", error);
+  }
+})();
+
 </script>
 </body></html>
