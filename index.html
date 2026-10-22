@@ -50,12 +50,12 @@ document.getElementById('inquiryForm').addEventListener('submit',function(e){e.p
 
     const products = await response.json();
 
-    if (!Array.isArray(products) || products.length === 0) {
-      return;
-    }
+    if (!Array.isArray(products)) return;
 
     const publishedProducts = products.filter(
-      product => product && product.published !== false
+      product => product &&
+        product.published !== false &&
+        product.slug
     );
 
     if (publishedProducts.length === 0) return;
@@ -63,7 +63,7 @@ document.getElementById('inquiryForm').addEventListener('submit',function(e){e.p
     container.replaceChildren();
 
     publishedProducts.forEach(product => {
-      const title = product.title || "New Product";
+      const title = product.title || "Apparel Product";
       const category = String(product.category || "women").toLowerCase();
 
       const fallbackImage = category === "men"
@@ -73,8 +73,11 @@ document.getElementById('inquiryForm').addEventListener('submit',function(e){e.p
       const imagePath =
         typeof product.image === "string" ? product.image.trim() : "";
 
-      const card = document.createElement("article");
+      const card = document.createElement("a");
       card.className = "cat-card";
+      card.href = "/products/" +
+        encodeURIComponent(product.slug) + "/";
+      card.setAttribute("aria-label", "View " + title);
 
       const imageBox = document.createElement("div");
       imageBox.className = "cat-image";
@@ -99,6 +102,7 @@ document.getElementById('inquiryForm').addEventListener('submit',function(e){e.p
 
       const arrow = document.createElement("span");
       arrow.textContent = "↗";
+      arrow.setAttribute("aria-hidden", "true");
 
       info.appendChild(heading);
       info.appendChild(arrow);
