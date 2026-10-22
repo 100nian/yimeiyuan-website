@@ -1,0 +1,9 @@
+
+{
+  "name": "yimeiyuan-website",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-products.js",
+    "deploy": "npm run build && npx wrangler deploy"
+  }
+}
