@@ -1,9 +1,11 @@
-title: Test Product
+title: CMS Test Product
 product_code: TEST001
 category: women
 description: Test product for website setup
 fabric: Cotton
 colors: Black, White
 sizes: S, M, L
+image: /images/products/213269_tiny.jpg
+gallery: []
 featured: false
 published: true
