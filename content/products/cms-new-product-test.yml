@@ -5,4 +5,4 @@ description: Temporary product for testing the CMS publishing workflow.
 fabric: polyester
 image: /images/products/oip-1-.webp
 featured: false
-published: true
+published: false
