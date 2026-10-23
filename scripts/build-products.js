@@ -76,7 +76,15 @@ function textValue(value) {
   if (Array.isArray(value)) return value.join(", ");
   return value == null ? "" : String(value);
 }
-
+function normalizeSlug(value) {
+  return String(value || "")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9_-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^[-_]+|[-_]+$/g, "")
+    .toLowerCase();
+}
 function makeDetailPage(product) {
   const title = textValue(product.title) || "Apparel Product";
   const code = textValue(product.product_code) || product.slug;
@@ -193,13 +201,13 @@ function buildProducts() {
     const files = fs.readdirSync(contentDir)
       .filter(file => /\.ya?ml$/i.test(file));
 
-    products = files.map(file => {
-      const text = fs.readFileSync(path.join(contentDir, file), "utf8");
-      return {
-        ...parseProduct(text),
-        slug: path.basename(file, path.extname(file))
-      };
-    });
+products = files.map(file => {
+  const text = fs.readFileSync(path.join(contentDir, file), "utf8");
+  return {
+    ...parseProduct(text),
+    slug: normalizeSlug(path.basename(file, path.extname(file)))
+  };
+});
   }
 
   products = products.filter(product => product.published !== false);
@@ -211,8 +219,7 @@ function buildProducts() {
   fs.mkdirSync(pagesDir, { recursive: true });
 
   for (const product of products) {
-    const slug = String(product.slug || "")
-      .replace(/[^a-zA-Z0-9_-]/g, "");
+    const slug = normalizeSlug(product.slug);
 
     if (!slug) continue;
 
