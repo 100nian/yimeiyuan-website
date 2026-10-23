@@ -129,7 +129,26 @@ form.addEventListener('submit', async function (e) {
   }
 });
   
-(async function () {
+// Auto-fill product information when a visitor comes from a product page.
+const inquiryParams = new URLSearchParams(window.location.search);
+const inquiryProductCode = inquiryParams.get('product');
+const inquiryProductTitle = inquiryParams.get('title');
+
+if (inquiryProductCode || inquiryProductTitle) {
+  const detailsField = document.querySelector(
+    '#inquiryForm [name="details"]'
+  );
+
+  if (detailsField) {
+    const productInfo =
+      'Product of interest: ' + (inquiryProductTitle || 'Not specified') +
+      '\nProduct code: ' + (inquiryProductCode || 'Not specified');
+
+    detailsField.value = productInfo +
+      (detailsField.value ? '\n\n' + detailsField.value : '');
+  }
+}
+  (async function () {
   const container = document.getElementById("product-list");
   if (!container) return;
 
